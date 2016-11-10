@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.model.ApiError;
+import com.example.security.AuthenticationException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import org.slf4j.Logger;
@@ -17,33 +18,43 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Order(Ordered.LOWEST_PRECEDENCE)
 public class ExceptionController {
 
-    private static final Logger logger = LoggerFactory.getLogger(ExceptionController.class);
+	private static final Logger logger = LoggerFactory.getLogger(ExceptionController.class);
 
-    @ExceptionHandler(JwtException.class)
-    @ResponseStatus(value = HttpStatus.FORBIDDEN)
-    @ResponseBody
-    public ApiError jwtException(JwtException exception) {
+	@ExceptionHandler(JwtException.class)
+	@ResponseStatus(value = HttpStatus.FORBIDDEN)
+	@ResponseBody
+	public ApiError jwtException(JwtException exception) {
 
-        String message;
+		String message;
 
-        if (exception instanceof ExpiredJwtException) {
+		if (exception instanceof ExpiredJwtException) {
 
-            message = "Expired token";
+			message = "Expired token";
 
-        } else {
+		} else {
 
-            message = "Invalid token";
-        }
+			message = "Invalid token";
+		}
 
-        return new ApiError(message);
-    }
+		return new ApiError(message);
+	}
 
-    @ExceptionHandler(Throwable.class)
-    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-    @ResponseBody
-    public ApiError throwable(Throwable exception) {
+	@ExceptionHandler(AuthenticationException.class)
+	@ResponseStatus(value = HttpStatus.UNAUTHORIZED)
+	@ResponseBody
+	public ApiError authenticationException(Throwable exception) {
 
-        return new ApiError(exception.getMessage());
-    }
+		return new ApiError(exception.getMessage());
+	}
+
+	@ExceptionHandler(Throwable.class)
+	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+	@ResponseBody
+	public ApiError throwable(Throwable exception) {
+
+		logger.error("Unexpected Exception", exception);
+
+		return new ApiError(exception.getMessage());
+	}
 
 }

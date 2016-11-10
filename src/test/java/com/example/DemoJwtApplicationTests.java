@@ -10,7 +10,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class DemoJwtApplicationTests {
 
 	@Test
-	public void contextLoads() {
+	public void theAppContextShouldBeLoadedWithoutExceptions() {
+
+		// Check that the app is loaded
 	}
 
 }

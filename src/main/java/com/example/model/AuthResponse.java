@@ -4,22 +4,22 @@ import java.time.LocalDateTime;
 
 public class AuthResponse {
 
-    private String token;
-    private LocalDateTime expirationDate;
+	private String token;
+	private LocalDateTime expirationDate;
 
-    public String getToken() {
-        return token;
-    }
+	public String getToken() {
+		return token;
+	}
 
-    public void setToken(String token) {
-        this.token = token;
-    }
+	public void setToken(String token) {
+		this.token = token;
+	}
 
-    public LocalDateTime getExpirationDate() {
-        return expirationDate;
-    }
+	public LocalDateTime getExpirationDate() {
+		return expirationDate;
+	}
 
-    public void setExpirationDate(LocalDateTime expirationDate) {
-        this.expirationDate = expirationDate;
-    }
+	public void setExpirationDate(LocalDateTime expirationDate) {
+		this.expirationDate = expirationDate;
+	}
 }

@@ -19,6 +19,6 @@ En la respuesta vendrá el token que debemos guardarnos:
 
 ### Endpoint seguro
 Una vez tengamos el token podemos llamar a http://localhost:8080//secured-message enviando la siguiente cabecera:
-- Authorization={{token}}
+- Authorization: Bearer {{token}}
 
-El API validará el token y si es correcto devolverá el mensaje *Hello secured world!*
+El API validará el token, los permisos y si todo es correcto devolverá el mensaje *Hello secured world!*
