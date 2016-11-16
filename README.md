@@ -10,7 +10,7 @@ Para obtener un token se debe realizar una petición GET a http://localhost:8080
 Ejemplo: 
 
 ```
-http://localhost:8080/token?user=iperez&password=1234
+curl "http://localhost:8080/token?user=iperez&password=1234"
 ```
 
 En la respuesta vendrán 4 valores:
@@ -37,7 +37,7 @@ Para ello es necesario realizar una petición GET a http://localhost:8080/refres
 Ejemplo: 
 
 ```
-http://localhost:8080/refresh-token?refresh_token=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpcGVyZXoiLCJleHAiOjE0Nzk0MTM0NDF9.MjELbpYivuekxNNYefugkb50EGsW4f02MsAjAEbfA96HyRz5QODO0D5rDbrnOMkZscbU88rlMk9IbK43I6UEnA
+curl "http://localhost:8080/refresh-token?refresh_token=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpcGVyZXoiLCJleHAiOjE0Nzk0MTM0NDF9.MjELbpYivuekxNNYefugkb50EGsW4f02MsAjAEbfA96HyRz5QODO0D5rDbrnOMkZscbU88rlMk9IbK43I6UEnA"
 ```
 
 La respuesta tendrá la misma información que el endpoint de obtener token, incluyendo el nuevo token de acceso.
@@ -55,5 +55,11 @@ La respuesta tendrá la misma información que el endpoint de obtener token, inc
 
 Una vez tengamos un token de acceso podemos llamar a http://localhost:8080/secured-message enviando la siguiente cabecera:
 - Authorization: Bearer {{access_token}}
+
+Ejemplo:
+
+```
+curl -H "Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpcGVyZXoiLCJleHAiOjE0NzkzMzAwOTB9.V6n8UU0Y08M147Oy-sTnZi6HQes1CNoxC1JmPaAUCg_DihY05ky1y_N8BU-1O5gkUthiW5y44H8pxFc7ltqT3Q" "http://localhost:8080/secured-message"
+```
 
 El API validará el token, los permisos y si todo es correcto devolverá el mensaje *Hello secured world!*

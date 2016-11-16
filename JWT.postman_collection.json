@@ -1,0 +1,59 @@
+{
+	"variables": [],
+	"info": {
+		"name": "JWT",
+		"_postman_id": "31c6d20c-34de-26b6-fa6c-cb8bdb2daa12",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Token",
+			"request": {
+				"url": "http://localhost:8080/token?user=iperez&password=1234",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Refresh token",
+			"request": {
+				"url": "http://localhost:8080/refresh-token?refresh_token=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpcGVyZXoiLCJleHAiOjE0Nzk0MTM0NDF9.MjELbpYivuekxNNYefugkb50EGsW4f02MsAjAEbfA96HyRz5QODO0D5rDbrnOMkZscbU88rlMk9IbK43I6UEnA",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Secured-message",
+			"request": {
+				"url": "http://localhost:8080//secured-message",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpcGVyZXoiLCJleHAiOjE0NzkzMjc0MTd9.AmpEGWb9d6X0khgbDq69CvdHuSENhfkopn2ThZ9LrZOcD430W3KPj4Yln4Z9tbo7fh8h4lADG6c_i2LjXGDbyw",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
