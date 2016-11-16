@@ -1,6 +1,6 @@
 package com.example.model;
 
-public class AuthRequest {
+public class TokenRequest {
 
 	private String user;
 	private String password;

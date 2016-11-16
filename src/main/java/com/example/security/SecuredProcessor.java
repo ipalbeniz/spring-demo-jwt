@@ -13,6 +13,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -21,6 +22,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -31,10 +33,11 @@ public class SecuredProcessor {
 
 	private static final Logger logger = LoggerFactory.getLogger(SecuredProcessor.class);
 
-	private static final String AUTH_TYPE = "Bearer";
-
 	private final UserService userService;
 	private final SecurityService securityService;
+
+	@Value("${jwt.tokenType}")
+	private String tokenType;
 
 	@Autowired
 	public SecuredProcessor(UserService userService, SecurityService securityService) {
@@ -45,21 +48,28 @@ public class SecuredProcessor {
 	@Before("@annotation(com.example.security.Secured)")
 	public void checkSecurity(JoinPoint point) throws Throwable {
 
-		String token = getTokenFromHeader();
+		String token = extractTokenFromHeader().orElseThrow(() -> new AuthorizationException("Access Token required"));
 
-		Jws<Claims> claims = securityService.parseToken(token);
+		Jws<Claims> claims = securityService.parseAndValidateToken(token);
 
 		checkPermissions(claims, point);
 
 		logger.debug("Security OK. User: {}, Expiration: {}", claims.getBody().getSubject(), claims.getBody().getExpiration());
 	}
 
-	private String getTokenFromHeader() {
+	private Optional<String> extractTokenFromHeader() {
 
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 		String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-		return StringUtils.replace(authorizationHeader, AUTH_TYPE, "").trim();
+		if (authorizationHeader != null) {
+
+			return Optional.of(StringUtils.replace(authorizationHeader, tokenType, "").trim());
+
+		} else {
+
+			return Optional.empty();
+		}
 	}
 
 	private void checkPermissions(Jws<Claims> claims, JoinPoint point) {

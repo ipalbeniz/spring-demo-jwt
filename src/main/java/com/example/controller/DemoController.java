@@ -1,15 +1,15 @@
 package com.example.controller;
 
-import com.example.model.AuthRequest;
-import com.example.model.AuthResponse;
 import com.example.model.Permission;
-import com.example.security.AuthenticationException;
+import com.example.model.TokenRequest;
+import com.example.model.TokenResponse;
 import com.example.security.Secured;
 import com.example.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -22,22 +22,20 @@ public class DemoController {
 		this.securityService = securityService;
 	}
 
-	@GetMapping("/auth")
-	public ResponseEntity<AuthResponse> authenticate(@ModelAttribute AuthRequest authRequest) {
+	@GetMapping("/token")
+	public ResponseEntity<TokenResponse> token(@ModelAttribute TokenRequest tokenRequest) {
 
-		AuthResponse authResponse = securityService.authenticate(authRequest)
-				.orElseThrow(() -> new AuthenticationException("User unable to authenticate"));
+		TokenResponse tokenResponse = securityService.authenticate(tokenRequest);
 
-		return ResponseEntity.ok(authResponse);
+		return ResponseEntity.ok(tokenResponse);
 	}
 
-	@Secured
-	@GetMapping("/refresh")
-	public ResponseEntity<AuthResponse> refresh() {
+	@GetMapping("/refresh-token")
+	public ResponseEntity<TokenResponse> refresh(@RequestParam("refresh_token") String refreshToken) {
 
-		// TODO: implement the token refresh operation
+		TokenResponse tokenResponse = securityService.newToken(refreshToken);
 
-		return ResponseEntity.ok(null);
+		return ResponseEntity.ok(tokenResponse);
 	}
 
 	@Secured({Permission.READ_MESSAGE})
