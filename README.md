@@ -16,8 +16,8 @@ curl "http://localhost:8080/token?user=iperez&password=1234"
 En la respuesta vendrán 4 valores:
  - access_token: el token de acceso a los recursos seguros
  - token_type: el tipo de token
- - expires_in: tiempo de vida en segundos del token de acceso
- - refresh_token: token especial para refrescar el token de acceso
+ - expires_in: el tiempo de vida en segundos del token de acceso
+ - refresh_token: el token especial para refrescar el token de acceso
 
 ```json
 {
@@ -31,7 +31,7 @@ En la respuesta vendrán 4 valores:
 ### Refrescar Token
 
 Cuando el token ha expirado podríamos obtener un nuevo token sin tener que volver a enviar el usuario y password.
-Para ello es necesario realizar una petición GET a http://localhost:8080/refresh-token con un query param:
+Para ello es necesario realizar una petición GET a http://localhost:8080/refresh-token con este query param:
 - refresh_token={{refresh_token}}
 
 Ejemplo: 

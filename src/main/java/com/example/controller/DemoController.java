@@ -33,7 +33,7 @@ public class DemoController {
 	@GetMapping("/refresh-token")
 	public ResponseEntity<TokenResponse> refresh(@RequestParam("refresh_token") String refreshToken) {
 
-		TokenResponse tokenResponse = securityService.newToken(refreshToken);
+		TokenResponse tokenResponse = securityService.validateRefreshTokenAndIssueNewAccessToken(refreshToken);
 
 		return ResponseEntity.ok(tokenResponse);
 	}

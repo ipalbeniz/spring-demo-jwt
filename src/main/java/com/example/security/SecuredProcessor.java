@@ -50,7 +50,7 @@ public class SecuredProcessor {
 
 		String token = extractTokenFromHeader().orElseThrow(() -> new AuthorizationException("Access Token required"));
 
-		Jws<Claims> claims = securityService.parseAndValidateToken(token);
+		Jws<Claims> claims = securityService.parseAndValidateAccessToken(token);
 
 		checkPermissions(claims, point);
 
